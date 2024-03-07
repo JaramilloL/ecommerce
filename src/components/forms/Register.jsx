@@ -1,41 +1,94 @@
-const Register = () => {
-  return (
-    <form>
-    <div className="form-floating mb-3">
-      <input
-        type="text"
-        className="form-control"
-        id="floatingText"
-        placeholder="name"
-        name="firstName"
-      />
-      <label htmlFor="floatingText">Name</label>
-    </div>
-    <div className="form-floating mb-3">
-      <input
-        type="email"
-        className="form-control"
-        id="floatingInput"
-        placeholder="name@example.com"
-        name="email"
-      />
-      <label htmlFor="floatingInput">Email address</label>
-    </div>
-    <div className="form-floating">
-      <input
-        type="password"
-        className="form-control"
-        id="floatingPassword"
-        placeholder="Password"
-        name="password"
-      />
-      <label htmlFor="floatingPassword">Password</label>
-    </div>
-    <div className="d-flex justify-content-center align-item-center">
-      <input type="submit" className="btn btn-primary w-50 mt-2"/>
-    </div>
-  </form>
-  )
-}
+import { useForm } from "react-hook-form";
 
-export default Register
+const Register = () => {
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors },
+    getValues,
+  } = useForm();
+
+  const onSubmit = handleSubmit((data) => {
+    console.log(data);
+    reset();
+  });
+
+  const getData = () => {
+    const newName = getValues("firstName");
+    console.log(newName);
+  };
+
+  return (
+    <form onSubmit={onSubmit}>
+      <div className="form-floating mb-3">
+        <input
+          type="text"
+          className="form-control"
+          id="floatingText"
+          placeholder="name"
+          name="firstName"
+          {...register("firstName", {
+            required: {
+              value: true,
+              message: "First Name is required",
+            },
+            minLength: {
+              value: 5,
+              message: "First Name must be at least 5 characters",
+            },
+            maxLength: {
+              value: 55,
+              message: "First Name must be at most 55 characters",
+            },
+          })}
+        />
+        <label htmlFor="floatingText">Name</label>
+        <p className="text-danger text-center">{errors?.firstName?.message}</p>
+      </div>
+      <div className="form-floating mb-3">
+        <input
+          type="email"
+          className="form-control"
+          id="floatingInput"
+          placeholder="name@example.com"
+          name="email"
+          {...register("email", {
+            required: {
+              value: true,
+              message: "Email is required",
+            },
+          })}
+        />
+        <label htmlFor="floatingInput">Email address</label>
+        <p className="text-danger text-center">{errors?.email?.message}</p>
+      </div>
+      <div className="form-floating">
+        <input
+          type="password"
+          className="form-control"
+          id="floatingPassword"
+          placeholder="Password"
+          name="password"
+          {...register("password", {
+            required: {
+              value: true,
+              message: "Password is required",
+            },
+          })}
+        />
+        <label htmlFor="floatingPassword">Password</label>
+        <p className="text-danger text-center">{errors?.password?.message}</p>
+      </div>
+      <div className="d-flex justify-content-center align-item-center">
+        <input
+          type="submit"
+          className="btn btn-primary w-50 mt-2"
+          onClick={getData}
+        />
+      </div>
+    </form>
+  );
+};
+
+export default Register;
