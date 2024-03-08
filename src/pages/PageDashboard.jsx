@@ -1,6 +1,10 @@
+import Dash from "../components/nav/Dash"
+
 const PageDashboard = () => {
   return (
-    <div>PageDashboard</div>
+    <div>
+      <Dash/>
+    </div>
   )
 }
 

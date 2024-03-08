@@ -1,6 +1,12 @@
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../context/UserContext";
 
 const Register = () => {
+  const navigatePage = useNavigate();
+  const { signIn } = useContext(UserContext);
+
   const {
     handleSubmit,
     register,
@@ -9,8 +15,15 @@ const Register = () => {
     getValues,
   } = useForm();
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      console.log(data);
+      await signIn(data.email, data.password);
+      navigatePage("/");
+    } catch (error) {
+      console.log(error);
+    }
+
     reset();
   });
 
