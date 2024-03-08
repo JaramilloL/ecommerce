@@ -1,9 +1,12 @@
 //vamos a trabajar con la libreria de react-hook-form para obtener los datos del formulario
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../context/UserContext";
 
 const Login = () => {
   const navigatePage = useNavigate();
+  const { login, loginAccess } = useContext(UserContext);
 
   const {
     handleSubmit,
@@ -13,9 +16,11 @@ const Login = () => {
     getValues,
   } = useForm();
 
-  const onSubmit = handleSubmit((data) => {
+  const onSubmit = handleSubmit(async(data) => {
     try {
       console.log(data);
+      await login(data.email, data.password)
+      loginAccess()
       navigatePage("/dashboard");
     } catch (error) {
       console.log(error);

@@ -2,7 +2,11 @@ import { useReducer } from "react";
 import { UserContext } from "../context/UserContext";
 import PropTypes from "prop-types";
 import ReducerContext from "./ReducerContext";
-import { createUserWithEmailAndPassword, signOut } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+} from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 
 const StateContext = ({ children }) => {
@@ -17,6 +21,13 @@ const StateContext = ({ children }) => {
   const signIn = (email, password) =>
     createUserWithEmailAndPassword(auth, email, password);
   const logOut = () => signOut(auth);
+
+  //creamos el inicio de sesion de firebase
+  const login = (email, password) =>
+    signInWithEmailAndPassword(auth, email, password);
+  const loginAccess = () => dispatch({ type: "login" });
+  const loginNotAccess = () => dispatch({ type: "logout" });
+
   //creamos un estado inicial en el reducer para controlar el estado de logeo de la app
   const [state, dispatch] = useReducer(ReducerContext, initialState);
 
@@ -27,6 +38,9 @@ const StateContext = ({ children }) => {
         dispatch,
         signIn,
         logOut,
+        login,
+        loginAccess,
+        loginNotAccess,
       }}
     >
       {children}
