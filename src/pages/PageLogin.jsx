@@ -5,7 +5,7 @@ const PageLogin = () => {
   return (
     <div className="container w-50">
       <div className="d-flex justify-content-center">
-        <img src={shop} alt="img" className="img-fluid w-25 mt-5 mb-5" />
+        <img src={shop} alt="img" className="img-fluid w-25 mt-5 mb-1" />
       </div>
 
       <Login />

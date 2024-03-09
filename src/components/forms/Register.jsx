@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 
 const Register = () => {
@@ -96,9 +96,16 @@ const Register = () => {
       <div className="d-flex justify-content-center align-item-center">
         <input
           type="submit"
-          className="btn btn-primary w-50 mt-2"
+          className="btn border-primary text-primary w-50 mt-2"
           onClick={getData}
+          value={'REGISTER'}
         />
+      </div>
+      <div className="d-flex justify-content-center align-item-center">
+        <Link
+          className="btn border-primary text-primary w-50 mt-2"
+          to={'/'}
+        >LOGIN</Link>
       </div>
     </form>
   );

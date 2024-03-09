@@ -1,7 +1,7 @@
 //vamos a trabajar con la libreria de react-hook-form para obtener los datos del formulario
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 
 const Login = () => {
@@ -16,11 +16,11 @@ const Login = () => {
     getValues,
   } = useForm();
 
-  const onSubmit = handleSubmit(async(data) => {
+  const onSubmit = handleSubmit(async (data) => {
     try {
       console.log(data);
-      await login(data.email, data.password)
-      loginAccess()
+      await login(data.email, data.password);
+      loginAccess();
       navigatePage("/dashboard");
     } catch (error) {
       console.log(error);
@@ -70,11 +70,26 @@ const Login = () => {
         <label htmlFor="floatingPassword">Password</label>
         <p className="text-danger text-center">{errors?.password?.message}</p>
       </div>
-      <div className="d-flex justify-content-center align-item-center">
+      <div className="d-flex flex-column justify-content-center align-items-center">
+        <Link className="text-primary text-center w-50 mt-2">
+          Forgot your password?
+        </Link>
         <input
           type="submit"
-          className="btn btn-primary w-50 mt-2"
+          className="btn border-primary text-primary w-50 mt-2"
           onClick={getData}
+          value={"LOGIN"}
+        />
+        <Link
+          className="btn border-primary text-primary w-50 mt-2"
+          to={"/register"}
+        >
+          SIGN UP
+        </Link>
+        <input
+          type="submit"
+          className="btn border-danger text-danger w-50 mt-2"
+          value={"GOOGLE"}
         />
       </div>
     </form>
