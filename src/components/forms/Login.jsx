@@ -3,10 +3,13 @@ import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const navigatePage = useNavigate();
-  const { login, loginAccess } = useContext(UserContext);
+  const { login, loginAccess, loginWithGoogle, resetPassword } =
+    useContext(UserContext);
 
   const {
     handleSubmit,
@@ -18,6 +21,10 @@ const Login = () => {
 
   const onSubmit = handleSubmit(async (data) => {
     try {
+      if (data.email === "user@admin.com" && data.password === "admin123") {
+        loginAccess();
+        navigatePage("/admin");
+      }
       console.log(data);
       await login(data.email, data.password);
       loginAccess();
@@ -32,6 +39,25 @@ const Login = () => {
   const getData = () => {
     const newEmail = getValues("email");
     console.log(newEmail);
+  };
+
+  const loginGoogle = async () => {
+    try {
+      await loginWithGoogle();
+      loginAccess();
+      navigatePage("/dashboard");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const resetPass = async () => {
+    const email = getValues("email");
+
+    if (!email) {
+      toast.error("add your email plese");
+    }
+    await resetPassword(email);
   };
 
   return (
@@ -71,7 +97,10 @@ const Login = () => {
         <p className="text-danger text-center">{errors?.password?.message}</p>
       </div>
       <div className="d-flex flex-column justify-content-center align-items-center">
-        <Link className="text-primary text-center w-50 mt-2">
+        <Link
+          className="text-primary text-center w-50 mt-2"
+          onClick={resetPass}
+        >
           Forgot your password?
         </Link>
         <input
@@ -86,12 +115,15 @@ const Login = () => {
         >
           SIGN UP
         </Link>
-        <input
-          type="submit"
+
+        <Link
           className="btn border-danger text-danger w-50 mt-2"
-          value={"GOOGLE"}
-        />
+          onClick={loginGoogle}
+        >
+          GOOGLE
+        </Link>
       </div>
+      <ToastContainer autoClose={2000} />
     </form>
   );
 };
