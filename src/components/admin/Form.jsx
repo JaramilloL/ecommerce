@@ -1,22 +1,39 @@
 //este es el formuario para gregar contenidoa la base de datos de firestore
 
+import { useContext } from "react";
+import { UserContext } from "../../context/UserContext";
+import { useForm } from "react-hook-form";
+import FormA from "./FormA";
+
 const Form = () => {
+  //asignamos el estado de logeo del usuario medinate el contexto
+  const { loginNotAccess } = useContext(UserContext);
+
+  //usando el hoook de react-hook-form realizaremos la estraccion de datos del formulario
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors },
+    getValues,
+  } = useForm();
+
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+    reset();
+  });
+
+  const share = () => {
+    const name = getValues("Name");
+    console.log(name);
+  };
+
   return (
-    <div>
-      <div className="form-floating mb-3">
-        <input
-          type="text"
-          className="form-control"
-          id="floatingInput"
-          placeholder="name..."
-          name={"Name"}
-        />
-        <label htmlFor="floatingInput">Name</label>
-      </div>
-      <div className="d-flex justify-content-center align-content-center align-items-center">
-        <button className="btn btn-primary">Add</button>
-      </div>
-    </div>
+    <FormA onSubmit={onSubmit} loginNotAccess={loginNotAccess} register={register} errors={errors} share={share}/>
   );
 };
 
